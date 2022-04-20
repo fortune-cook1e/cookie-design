@@ -1,35 +1,31 @@
-const path = require('path')
-
-function resolve(dir) {
-	return path.join(__dirname, dir)
-}
+const paths = require('./paths')
 
 module.exports = {
 	stories: ['../src/**/*.stories.tsx', '../src/**/*.stories.mdx'],
-	addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
-	webpackFinal: async config => {
+	addons: [
+		'@storybook/addon-links',
+		'@storybook/addon-essentials'
+		// '@storybook/addon-interactions'
+	],
+	framework: '@storybook/react',
+	webpackFinal: async (config, { configType }) => {
+		// `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
+		// You can change the configuration based on that.
+		// 'PRODUCTION' is used when building the static version of storybook.
+
+		// Make whatever fine-grained changes you need
 		config.module.rules.push({
 			test: /\.less$/,
-			use: [
-				'style-loader',
-				'css-loader',
-				{
-					loader: 'less-loader',
-					options: {
-						lessOptions: {
-							javascriptEnabled: true
-						}
-					}
-				}
-			],
-			include: path.resolve(__dirname, '../src')
+			use: ['style-loader', 'css-loader', 'less-loader'],
+			include: paths.src
 		})
 
 		config.resolve.alias = {
 			...config.resolve.alias,
-			'@': path.resolve(__dirname, '../src')
+			'@': paths.src
 		}
-		config.resolve.extensions.push('.ts', '.tsx')
+
+		// Return the altered config
 		return config
 	}
 }
