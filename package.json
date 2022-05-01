@@ -1,10 +1,10 @@
 {
-	"name": "cookie-ui",
+	"name": "cookie-components",
 	"version": "1.0.0",
 	"main": "dist/cjs/index.js",
 	"module": "dist/esm/index.js",
 	"types": "dist/index.d.ts",
-	"repository": "https://github.com/fortune-cook1e/cookie-ui.git",
+	"repository": "https://github.com/fortune-cook1e/cookie-components.git",
 	"author": "fortune cookie <767077147@qq.com>",
 	"license": "MIT",
 	"scripts": {
@@ -12,6 +12,9 @@
 		"build": "rollup -c",
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook"
+	},
+	"dependencies": {
+		"lodash": "^4.17.21"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.17.9",
@@ -25,6 +28,7 @@
 		"@storybook/addon-links": "^6.4.22",
 		"@storybook/react": "^6.4.22",
 		"@storybook/testing-library": "^0.0.10",
+		"@types/lodash": "^4.14.182",
 		"@types/react": "^18.0.5",
 		"babel-loader": "^8.2.5",
 		"css-loader": "5.2.7",
@@ -46,6 +50,5 @@
 	"peerDependencies": {
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0"
-	},
-	"dependencies": {}
+	}
 }
