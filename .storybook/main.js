@@ -20,6 +20,12 @@ module.exports = {
 			include: paths.src
 		})
 
+		config.module.rules.push({
+			test: /\.mjs$/,
+			include: /node_modules/,
+			type: 'javascript/auto'
+		})
+
 		config.resolve.alias = {
 			...config.resolve.alias,
 			'@': paths.src
