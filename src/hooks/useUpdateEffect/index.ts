@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { createUpdateEffect } from '../createUpdateEffect'
+import createUpdateEffect from '../createUpdateEffect'
 
 /**
  * @description 只有当依赖更新时才出发 useEffect

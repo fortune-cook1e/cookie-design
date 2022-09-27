@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"rootDir": "src",
 		"target": "es5",
 		"module": "esnext",
 		"jsx": "react",
@@ -10,10 +11,11 @@
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
+		"noImplicitAny": false,
 		"forceConsistentCasingInFileNames": true,
-		"declaration": true,
-		"declarationDir": "types",
-		"emitDeclarationOnly": true,
+		// "declaration": true,
+		// "declarationDir": "types",
+		// "emitDeclarationOnly": true,
 		"baseUrl": "./",
 		"paths": {
 			"@/*": ["src/*"]

@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, MutableRefObject } from 'react'
 
-export function useHover<T>(): [MutableRefObject<T>, boolean] {
+function useHover<T>(): [MutableRefObject<T>, boolean] {
 	const [value, setValue] = useState<boolean>(false)
 	const ref: any = useRef<T | null>(null)
 	const handleMouseOver = (): void => setValue(true)
@@ -21,3 +21,5 @@ export function useHover<T>(): [MutableRefObject<T>, boolean] {
 	)
 	return [ref, value]
 }
+
+export default useHover

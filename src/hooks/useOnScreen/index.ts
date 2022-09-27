@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export const useOnScreen = (ref: React.RefObject<HTMLElement>, rootMargin = '0px') => {
+const useOnScreen = (ref: React.RefObject<HTMLElement>, rootMargin = '0px') => {
 	// State for keeping track of whether element is visible
 	const [isIntersecting, setIntersecting] = useState(false)
 
@@ -14,13 +14,13 @@ export const useOnScreen = (ref: React.RefObject<HTMLElement>, rootMargin = '0px
 				rootMargin
 			}
 		)
-		if (ref.current) {
-			observer.observe(ref.current)
-		}
+		ref.current && observer.observe(ref.current)
 		return () => {
-			observer.unobserve(ref.current)
+			ref.current && observer.unobserve(ref.current)
 		}
 	}, [ref, rootMargin])
 
 	return isIntersecting
 }
+
+export default useOnScreen

@@ -8,7 +8,7 @@ import { useState, useEffect, useCallback } from 'react'
  * @date 2022-05-15 19:34:56
  */
 
-export const useAsync = <T>(asyncFunction: (params: any) => Promise<T>, immediate = false) => {
+const useAsync = <T>(asyncFunction: (params: any) => Promise<T>, immediate = false) => {
 	const [state, setState] = useState({
 		loading: false,
 		error: null,
@@ -49,3 +49,5 @@ export const useAsync = <T>(asyncFunction: (params: any) => Promise<T>, immediat
 
 	return [state, { execute }]
 }
+
+export default useAsync

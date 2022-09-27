@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useParams, useLocation, useHistory, useRouteMatch } from 'react-router-dom'
 import queryString from 'query-string'
 
-export const useRouter = () => {
+const useRouter = () => {
 	const params = useParams()
 	const location = useLocation()
 	const history = useHistory()
@@ -32,3 +32,5 @@ export const useRouter = () => {
 		goForward
 	}
 }
+
+export default useRouter
