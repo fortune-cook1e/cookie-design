@@ -14,12 +14,13 @@
 		"noImplicitAny": false,
 		"forceConsistentCasingInFileNames": true,
 		// "declaration": true,
-		// "declarationDir": "types",
+		// "declarationDir": "dist/types",
 		// "emitDeclarationOnly": true,
 		"baseUrl": "./",
 		"paths": {
 			"@/*": ["src/*"]
 		}
 	},
+	"typeRoots": ["node_modules/@types", "src/declaration.d.ts", "vite.config.ts", "vite/client"],
 	"include": ["src/*"]
 }

@@ -49,7 +49,7 @@ const Overlay = ({
 
 	const handleClose = (e: React.MouseEvent): void => {
 		e.preventDefault()
-		onClose()
+		onClose?.()
 	}
 
 	return (

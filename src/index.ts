@@ -1,1 +1,1 @@
-console.log('dadsa')
+export { default as Overlay } from '@/components/Overlay'

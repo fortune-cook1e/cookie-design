@@ -8,119 +8,98 @@ import { terser } from 'rollup-plugin-terser'
 
 import typescript from 'rollup-plugin-typescript2'
 import postcss from 'rollup-plugin-postcss'
-// import json from '@rollup/plugin-json'
 import babel from '@rollup/plugin-babel'
-import packageJson from './package.json'
-// import dts from 'rollup-plugin-dts'
+// import packageJson from './package.json'
+import dts from 'rollup-plugin-dts'
+
+function pathResolve(dir) {
+	return path.resolve(__dirname, dir)
+}
 
 // 入口
-
-const hooksDir = 'src/hooks/index.ts'
-// const hooksDir = 'src/hooks'
-// const hooksName = fs.readdirSync(path.resolve(hooksDir))
-// const hooksEntry = hooksName.map(name => {
-// 	if (name === 'index.ts') return
-// 	return `hooks/${name}/index.ts`
-// })
-
-const EXTENSIONS = ['.ts', '.tsx', '.js', '.less']
-const ROOT_DIR = path.resolve(__dirname, './src')
+const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
+const ROOT_DIR = pathResolve('./src')
+const entry = pathResolve('./src/index.ts')
 
 // 环境变量
-const isProd = process.env.NODE_ENV === 'production'
+const isDev = process.env.NODE_ENV === 'development'
 
-// sass打包
-const processScss = function (context) {
-	return new Promise((resolve, reject) => {
-		sass.compile(
+const componentsDir = path.resolve(__dirname, './src/components')
+const componentsName = fs.readdirSync(path.resolve(componentsDir))
+const componentsEntry = componentsName.map(name => `${componentsDir}/${name}/index.ts`)
+
+const commonPlugins = [
+	peerDepsExternal(), // 阻止打包 peer依赖
+	typescript({ useTsconfigDeclarationDir: true }),
+	resolve(),
+	commonjs(), // 打包成cjs格式
+	babel({
+		babelHelpers: 'bundled',
+		extensions: EXTENSIONS,
+		exclude: '**/node_modules/**',
+		presets: ['@babel/preset-env', '@babel/preset-typescript', '@babel/preset-react']
+	}),
+	alias({
+		resolve: EXTENSIONS,
+		entries: [
 			{
-				file: context
-			},
-			function (err, result) {
-				if (!err) {
-					resolve(result)
-				} else {
-					reject(result)
-				}
+				find: '@',
+				replacement: ROOT_DIR
 			}
-		)
-		sass.compile(context, {}).then(
-			function (output) {
-				if (output && output.css) {
-					resolve(output.css)
-				} else {
-					reject({})
-				}
-			},
-			function (err) {
-				reject(err)
-			}
-		)
+		]
 	})
-}
+	// FIXME: 压缩会导致语法错误
+	// terser({
+	// 	ecma: 6
+	// })
+]
 
-// ES Module打包输出
-const esmOutput = {
-	preserveModules: true,
-	// preserveModulesRoot: 'src',
-	// exports: 'named',
-	assetFileNames: ({ name }) => {
-		const { ext, dir, base } = path.parse(name)
-		if (ext !== '.css') return '[name].[ext]'
-		// 规范 style 的输出格式
-		return path.join(dir, 'style', base)
-	}
-}
-
-export default {
-	input: [hooksDir],
+const componentsOption = {
+	input: [entry, ...componentsEntry],
 	output: {
-		dist: path.resolve(__dirname, './dist'),
-		file: packageJson.module,
+		preserveModules: true,
+		preserveModulesRoot: 'src',
+		dir: './dist',
 		format: 'esm',
-		sourcemap: true
+		sourcemap: isDev,
+		preserveModulesRoot: 'src'
 	},
-	// external: externalConfig,
 	plugins: [
-		commonjs(), // 打包成cjs格式
-		babel({
-			babelHelpers: 'bundled',
-			extensions: EXTENSIONS,
-			// exclude: '**/node_modules/**',
-			presets: ['@babel/preset-env', '@babel/preset-typescript', '@babel/preset-react']
-		}),
-		peerDepsExternal(), // 阻止打包 peer依赖
-		resolve(),
-		alias({
-			resolve: EXTENSIONS,
-			entries: [
-				{
-					find: '@',
-					replacement: ROOT_DIR
-				}
-			]
-		}),
-
-		typescript({ useTsconfigDeclarationDir: true }),
 		postcss({
-			minimize: true,
-			modules: true,
-			use: {
-				sass: null,
-				stylus: null,
-				less: { javascriptEnabled: true }
-			},
-			extensions: ['.less'],
-			extract: true
+			extract: true,
+			minimize: !isDev,
+			modules: false,
+			extensions: ['.less']
 		}),
-		terser() // 压缩bundle
-		// visualizer({
-		// 	filename: 'bundle-analysis.html',
-		// 	open: true
-		// })
-		// postcss({
-		// 	extract: true
-		// 	// process: processScss
-		// }),
+		...commonPlugins
 	]
 }
+
+const hooksOption = {
+	input: 'src/hooks/index.ts',
+	output: {
+		dist: path.resolve(__dirname, './dist/hooks'),
+		file: 'dist/hooks/index.js',
+		format: 'esm',
+		sourcemap: isDev
+	},
+	plugins: [...commonPlugins]
+}
+
+export default [
+	componentsOption,
+	{
+		...componentsOption,
+		output: { preserveModules: true, preserveModulesRoot: 'src', dir: 'dist/types', format: 'es' },
+		plugins: [
+			...commonPlugins,
+			postcss({
+				extract: true,
+				minimize: !isDev,
+				modules: false,
+				extensions: ['.less']
+			}),
+			dts()
+		]
+	}
+]
