@@ -1,5 +1,5 @@
 import React from 'react'
-import Demo from './demo'
+import Demo from './__example__'
 import Overlay from './Overlay'
 
 export default {

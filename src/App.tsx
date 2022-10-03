@@ -7,7 +7,7 @@ const App = (): JSX.Element => {
 
 	const DemoComponent: any = useMemo(() => {
 		if (!com) return null
-		const Component = lazy(() => import(`./components/${com}/demo/index.tsx`))
+		const Component = lazy(() => import(`./packages/${com}/__example__/index.tsx`))
 		return Component
 	}, [com])
 

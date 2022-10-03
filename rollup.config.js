@@ -4,7 +4,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import alias from '@rollup/plugin-alias'
-import { terser } from 'rollup-plugin-terser'
+// import { terser } from 'rollup-plugin-terser'
 
 import typescript from 'rollup-plugin-typescript2'
 import postcss from 'rollup-plugin-postcss'
@@ -24,7 +24,7 @@ const entry = pathResolve('./src/index.ts')
 // 环境变量
 const isDev = process.env.NODE_ENV === 'development'
 
-const componentsDir = path.resolve(__dirname, './src/components')
+const componentsDir = path.resolve(__dirname, './src/packages')
 const componentsName = fs.readdirSync(path.resolve(componentsDir))
 const componentsEntry = componentsName.map(name => `${componentsDir}/${name}/index.ts`)
 
@@ -37,7 +37,7 @@ const commonPlugins = [
 		babelHelpers: 'bundled',
 		extensions: EXTENSIONS,
 		exclude: '**/node_modules/**',
-		presets: ['@babel/preset-env', '@babel/preset-typescript', '@babel/preset-react']
+		presets: ['@babel/preset-env']
 	}),
 	alias({
 		resolve: EXTENSIONS,
@@ -47,6 +47,12 @@ const commonPlugins = [
 				replacement: ROOT_DIR
 			}
 		]
+	}),
+	postcss({
+		extract: true,
+		minimize: !isDev,
+		modules: false,
+		extensions: ['.less']
 	})
 	// FIXME: 压缩会导致语法错误
 	// terser({
@@ -61,29 +67,9 @@ const componentsOption = {
 		preserveModulesRoot: 'src',
 		dir: './dist',
 		format: 'esm',
-		sourcemap: isDev,
-		preserveModulesRoot: 'src'
-	},
-	plugins: [
-		postcss({
-			extract: true,
-			minimize: !isDev,
-			modules: false,
-			extensions: ['.less']
-		}),
-		...commonPlugins
-	]
-}
-
-const hooksOption = {
-	input: 'src/hooks/index.ts',
-	output: {
-		dist: path.resolve(__dirname, './dist/hooks'),
-		file: 'dist/hooks/index.js',
-		format: 'esm',
 		sourcemap: isDev
 	},
-	plugins: [...commonPlugins]
+	plugins: commonPlugins
 }
 
 export default [
@@ -91,15 +77,6 @@ export default [
 	{
 		...componentsOption,
 		output: { preserveModules: true, preserveModulesRoot: 'src', dir: 'dist/types', format: 'es' },
-		plugins: [
-			...commonPlugins,
-			postcss({
-				extract: true,
-				minimize: !isDev,
-				modules: false,
-				extensions: ['.less']
-			}),
-			dts()
-		]
+		plugins: [...commonPlugins, dts()]
 	}
 ]

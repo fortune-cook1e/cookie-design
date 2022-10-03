@@ -1,7 +1,7 @@
 import React, { CSSProperties, useMemo, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { createNamespace } from '../../utils/bem'
-import './index.less'
+import './styles/index.less'
 
 export type noop = (...args: any) => void
 

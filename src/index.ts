@@ -1,1 +1,1 @@
-export { default as Overlay } from '@/components/Overlay'
+export { default as Overlay } from '@/packages/Overlay'
