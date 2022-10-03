@@ -4,7 +4,7 @@
 	"main": "dist/index.js",
 	"module": "dist/index.js",
 	"types": "dist/types/index.d.ts",
-	"repository": "https://github.com/fortune-cook1e/cookie-components.git",
+	"repository": "https://github.com/fortune-cook1e/cookie-design.git",
 	"author": "fortune cookie <767077147@qq.com>",
 	"license": "MIT",
 	"files": [
