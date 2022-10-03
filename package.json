@@ -1,5 +1,5 @@
 {
-	"name": "@fe-cookie/components",
+	"name": "cookie-design",
 	"version": "1.1.0",
 	"main": "dist/index.js",
 	"module": "dist/index.js",
@@ -7,6 +7,9 @@
 	"repository": "https://github.com/fortune-cook1e/cookie-components.git",
 	"author": "fortune cookie <767077147@qq.com>",
 	"license": "MIT",
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"start": "vite",
 		"dev": "rimraf dist && rollup -c -w",

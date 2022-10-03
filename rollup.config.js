@@ -76,6 +76,7 @@ export default [
 	componentsOption,
 	{
 		...componentsOption,
+		input: entry,
 		output: { preserveModules: true, preserveModulesRoot: 'src', dir: 'dist/types', format: 'es' },
 		plugins: [...commonPlugins, dts()]
 	}
