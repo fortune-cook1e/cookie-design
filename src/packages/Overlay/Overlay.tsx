@@ -7,7 +7,6 @@ export type noop = (...args: any) => void
 
 export interface OverlayProps {
 	visible: boolean
-	zIndex?: number
 	style?: CSSProperties
 	onClose?: noop
 	lockScroll?: boolean // 是否阻止滚动穿透
@@ -16,20 +15,13 @@ export interface OverlayProps {
 
 const [classname] = createNamespace('overlay')
 
-const Overlay = ({
-	visible,
-	zIndex,
-	style,
-	lockScroll,
-	onClose,
-	children
-}: OverlayProps): JSX.Element => {
+const Overlay = ({ visible, style, lockScroll, onClose, children }: OverlayProps): JSX.Element => {
 	const _style: CSSProperties = useMemo(() => {
 		return {
-			...style,
-			zIndex: zIndex ?? 1
+			zIndex: 1,
+			...style
 		}
-	}, [zIndex])
+	}, [style])
 
 	const handleTouch = (e: Event): void => {
 		e.preventDefault()

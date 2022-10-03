@@ -3,7 +3,7 @@ import * as fs from 'fs-extra'
 import { render } from 'react-dom'
 
 const App = (): JSX.Element => {
-	const [com, setCom] = useState<string>(COMPONENTS[0])
+	const [com, setCom] = useState<string>(COMPONENTS[1])
 
 	const DemoComponent: any = useMemo(() => {
 		if (!com) return null
@@ -11,10 +11,15 @@ const App = (): JSX.Element => {
 		return Component
 	}, [com])
 
+	const onSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		const value = event.target.value
+		setCom(value)
+	}
+
 	return (
 		<div>
 			<h2>this is app</h2>
-			<select name='component'>
+			<select name='component' onChange={onSelect}>
 				{COMPONENTS.map(c => {
 					return (
 						<option key={c} value={c}>

@@ -7,4 +7,4 @@ export default {
 	component: Overlay
 }
 
-export const Primary = () => <Demo></Demo>
+export const Primary = () => <Demo />

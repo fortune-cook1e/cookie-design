@@ -32,7 +32,7 @@ export function createBEM(name: string) {
 			el = ''
 		}
 
-		el = el ? `${name}__${el}` : name
+		el = el ? `${name}--${el}` : name
 
 		return `${el}${genBem(el, mods)}`
 	}

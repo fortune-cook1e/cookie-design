@@ -11,7 +11,7 @@ const PORT = 8080
 const API_PREFIX = '/api'
 const API_HOST = 'http://localhost:3000'
 
-const componentsDir = path.resolve(__dirname, './src/components')
+const componentsDir = path.resolve(__dirname, './src/packages')
 const componentsNames = fs.readdirSync(path.resolve(componentsDir))
 
 const PATHS = {
