@@ -19,7 +19,7 @@ const App = (): JSX.Element => {
 	return (
 		<div>
 			<h2>this is app</h2>
-			<select name='component' onChange={onSelect}>
+			<select name='component' value={com} onChange={onSelect}>
 				{COMPONENTS.map(c => {
 					return (
 						<option key={c} value={c}>

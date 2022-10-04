@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react'
+import React, { FC, PropsWithChildren, useMemo } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Overlay from '../Overlay'
 import { PopupProps } from './types'
@@ -19,6 +19,11 @@ const Popup: FC<PropsWithChildren<PopupProps>> = (props): JSX.Element => {
 		children
 	} = props
 
+	const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
+		event.stopPropagation()
+		onClose()
+	}
+
 	const onOverlayClick = () => {
 		if (closeOnClickOverlay) {
 			onClose()
@@ -30,24 +35,33 @@ const Popup: FC<PropsWithChildren<PopupProps>> = (props): JSX.Element => {
 		return null
 	}
 
+	const variants = useMemo(() => {
+		switch (position) {
+			case 'center':
+				return { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
+			case 'top':
+				return { initial: { y: -300 }, animate: { y: 0 }, exit: { y: -300 } }
+			case 'right':
+				return { initial: { x: 300 }, animate: { x: 0 }, exit: { x: 300 } }
+			case 'left':
+				return { initial: { x: -300 }, animate: { x: 0 }, exit: { x: -300 } }
+			case 'bottom':
+				return { initial: { y: 300 }, animate: { y: 0 }, exit: { y: 300 } }
+		}
+	}, [position])
+
 	return (
 		<>
 			{renderOverlay()}
 			<AnimatePresence>
 				{visible && (
 					<motion.div
-						// initial={{ x: 300 }}
-						// animate={{ x: 0 }}
-						// exit={{ x: -300 }}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						// transition={{ duration: 0.2 }}
-						onClick={onClose}
+						{...variants}
+						transition={{ duration: 0.3 }}
+						className={bem({ [position]: position }) as string}
+						style={style}
 					>
-						<div className={bem({ [position]: position }) as string} style={style}>
-							{children}
-						</div>
+						{children}
 					</motion.div>
 				)}
 			</AnimatePresence>

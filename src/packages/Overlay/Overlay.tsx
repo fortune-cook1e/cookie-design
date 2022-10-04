@@ -41,6 +41,7 @@ const Overlay = ({ visible, style, lockScroll, onClose, children }: OverlayProps
 
 	const handleClose = (e: React.MouseEvent): void => {
 		e.preventDefault()
+		e.stopPropagation()
 		onClose?.()
 	}
 

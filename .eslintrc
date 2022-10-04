@@ -1,6 +1,7 @@
 {
 	"extends": ["alloy", "alloy/react", "alloy/typescript"],
 	"globals": {
-		"JSX": true
+		"JSX": true,
+		"COMPONENTS": true
 	}
 }
