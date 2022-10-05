@@ -1,9 +1,10 @@
-import React, { useMemo, useState, Suspense, lazy } from 'react'
 import * as fs from 'fs-extra'
+import React, { useMemo, useState, Suspense, lazy } from 'react'
 import { render } from 'react-dom'
+import './app.less'
 
 const App = (): JSX.Element => {
-	const [com, setCom] = useState<string>(COMPONENTS[1])
+	const [com, setCom] = useState<string>(COMPONENTS[2])
 
 	const DemoComponent: any = useMemo(() => {
 		if (!com) return null
@@ -17,8 +18,8 @@ const App = (): JSX.Element => {
 	}
 
 	return (
-		<div>
-			<h2>this is app</h2>
+		<div className='app'>
+			{/* <h2>this is app</h2>
 			<select name='component' value={com} onChange={onSelect}>
 				{COMPONENTS.map(c => {
 					return (
@@ -27,7 +28,7 @@ const App = (): JSX.Element => {
 						</option>
 					)
 				})}
-			</select>
+			</select> */}
 			<Suspense fallback='loading...'>
 				<DemoComponent />
 			</Suspense>

@@ -1,1 +1,1 @@
-export { default as Overlay } from '../components/Overlay'
+export const inBrowser = typeof window !== 'undefined'
