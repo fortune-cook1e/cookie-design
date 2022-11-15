@@ -1,2 +1,1 @@
-export * from './useScrollParent'
-export * from './useTouch'
+export { default as useScrollParent } from './useScrollParent'

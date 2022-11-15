@@ -12,7 +12,6 @@ export { default as useMount } from './useMount'
 export { default as useOnClickOutside } from './useOnClickOutside'
 export { default as useOnScreen } from './useOnScreen'
 export { default as usePrevious } from './usePrevious'
-export { default as useRouter } from './useRouter'
 export { default as useToggle } from './useToggle'
 export { default as useUpdateEffect } from './useUpdateEffect'
 

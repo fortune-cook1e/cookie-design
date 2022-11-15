@@ -10,7 +10,8 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 // import { terser } from 'rollup-plugin-terser'
 import postcss from 'rollup-plugin-postcss'
 import typescript from 'rollup-plugin-typescript2'
-// import packageJson from './package.json'
+
+import packageJson from './package.json'
 
 function pathResolve(dir) {
   return path.resolve(__dirname, dir)
@@ -20,6 +21,7 @@ function pathResolve(dir) {
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 const ROOT_DIR = pathResolve('./src')
 const entry = pathResolve('./src/index.ts')
+const hooksEntry = pathResolve('./src/packages/hooks/index.ts')
 
 // 环境变量
 const isDev = process.env.NODE_ENV === 'development'
@@ -32,14 +34,13 @@ const componentsEntry = componentsName.map(name => `${componentsDir}/${name}/ind
 
 const commonPlugins = [
   peerDepsExternal(), // 阻止打包 peer依赖
-  typescript({ useTsconfigDeclarationDir: true }),
   resolve(),
-  commonjs(), // 打包成cjs格式
+  commonjs(),
+  typescript({ useTsconfigDeclarationDir: true }),
   babel({
-    babelHelpers: 'bundled',
+    babelHelpers: 'runtime',
     extensions: EXTENSIONS,
-    exclude: '**/node_modules/**',
-    presets: ['@babel/preset-env']
+    exclude: 'node_modules/**' // 防止打包node_modules下的文件
   }),
   alias({
     resolve: EXTENSIONS,
@@ -64,22 +65,42 @@ const commonPlugins = [
 
 const componentsOption = {
   input: [entry, ...componentsEntry],
-  output: {
-    preserveModules: true,
-    preserveModulesRoot: 'src',
-    dir: './dist',
-    format: 'esm',
-    sourcemap: isDev
-  },
+  // FIXME: 暂时不引入 extenal
+  output: [
+    {
+      reserveModules: true,
+      preserveModulesRoot: 'src',
+      dir: './dist/es',
+      format: 'esm'
+    },
+    {
+      reserveModules: true,
+      preserveModulesRoot: 'src',
+      dir: './dist/lib',
+      format: 'cjs'
+    }
+  ],
+
   plugins: commonPlugins
 }
 
-export default [
-  componentsOption,
-  {
-    ...componentsOption,
-    input: entry,
-    output: { preserveModules: true, preserveModulesRoot: 'src', dir: 'dist/types', format: 'es' },
-    plugins: [...commonPlugins, dts()]
+const typesOption = {
+  input: entry,
+  output: {
+    preserveModules: true,
+    preserveModulesRoot: 'src',
+    dir: 'dist/types',
+    format: 'esm'
+  },
+  plugins: [...commonPlugins, dts()]
+}
+
+const hooksOption = {
+  input: hooksEntry,
+  output: {
+    dir: 'dist/hooks',
+    format: 'esm'
   }
-]
+}
+
+export default [componentsOption, typesOption]
