@@ -1,26 +1,27 @@
 {
-	"compilerOptions": {
-		"rootDir": "src",
-		"target": "ES6",
-		"module": "esnext",
-		"jsx": "react",
-		"sourceMap": true,
-		"outDir": "dist",
-		"strict": true,
-		"moduleResolution": "node",
-		"allowSyntheticDefaultImports": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"noImplicitAny": false,
-		"forceConsistentCasingInFileNames": true,
-		// "declaration": true,
-		// "declarationDir": "dist/types",
-		// "emitDeclarationOnly": true,
-		"baseUrl": "./",
-		"paths": {
-			"@/*": ["src/*"]
-		}
-	},
-	"typeRoots": ["node_modules/@types", "src/declaration.d.ts", "vite.config.ts", "vite/client"],
-	"include": ["src/*"]
+  "compilerOptions": {
+    "rootDir": "src",
+    "target": "ES6",
+    "module": "esnext",
+    "jsx": "react",
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": true,
+    // "declaration": true,
+    // "declarationDir": "dist/types",
+    // "emitDeclarationOnly": true,
+    "baseUrl": "./",
+    "lib": ["DOM", "ES2016"],
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "typeRoots": ["node_modules/@types", "src/declaration.d.ts", "vite.config.ts", "vite/client"],
+  "include": ["src/*"]
 }

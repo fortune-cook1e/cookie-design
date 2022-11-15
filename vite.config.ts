@@ -1,9 +1,10 @@
-import { defineConfig } from 'vite'
+import * as path from 'path'
+
 import react from '@vitejs/plugin-react'
+import * as fs from 'fs-extra'
 import postcssPresetImport from 'postcss-import'
 import postcssPresetEnv from 'postcss-preset-env'
-import * as path from 'path'
-import * as fs from 'fs-extra'
+import { defineConfig } from 'vite'
 
 const { resolve } = path
 
@@ -15,41 +16,41 @@ const componentsDir = path.resolve(__dirname, './src/packages')
 const componentsNames = fs.readdirSync(path.resolve(componentsDir))
 
 const PATHS = {
-	// Source files
-	src: resolve(__dirname, './src'),
+  // Source files
+  src: resolve(__dirname, './src'),
 
-	// Production build files
-	build: resolve(__dirname, './dist'),
+  // Production build files
+  build: resolve(__dirname, './dist'),
 
-	// Static files that get copied to build folder
-	public: resolve(__dirname, './public')
+  // Static files that get copied to build folder
+  public: resolve(__dirname, './public')
 }
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [react()],
-	define: {
-		IS_DEV: false,
-		COMPONENTS: componentsNames
-	},
-	css: {
-		postcss: {
-			plugins: [postcssPresetImport, postcssPresetEnv]
-		}
-	},
-	resolve: {
-		alias: {
-			'@': PATHS.src
-		}
-	},
-	server: {
-		port: PORT,
-		strictPort: true,
-		proxy: {
-			[`${API_PREFIX}`]: {
-				target: API_HOST,
-				rewrite: path => path.replace(/^\/api/, '')
-			}
-		}
-	}
+  plugins: [react()],
+  define: {
+    IS_DEV: false,
+    COMPONENTS: componentsNames
+  },
+  css: {
+    postcss: {
+      plugins: [postcssPresetImport, postcssPresetEnv]
+    }
+  },
+  resolve: {
+    alias: {
+      '@': PATHS.src
+    }
+  },
+  server: {
+    port: PORT,
+    strictPort: true,
+    proxy: {
+      [`${API_PREFIX}`]: {
+        target: API_HOST,
+        rewrite: path => path.replace(/^\/api/, '')
+      }
+    }
+  }
 })

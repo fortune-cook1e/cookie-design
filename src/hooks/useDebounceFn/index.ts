@@ -1,6 +1,8 @@
 import debounce from 'lodash/debounce'
 import { useMemo } from 'react'
+
 import useLatest from '../useLatest'
+
 import { DebounceOptions } from './options'
 
 type noop = (...args: any) => any
@@ -12,27 +14,27 @@ type noop = (...args: any) => any
  * @date 2022-05-01 16:56:22
  */
 function useDebounceFn<T extends noop>(fn: T, options?: DebounceOptions) {
-	const fnRef = useLatest(fn)
+  const fnRef = useLatest(fn)
 
-	const wait = options?.wait ?? 1000
+  const wait = options?.wait ?? 1000
 
-	const debounced = useMemo(
-		() =>
-			debounce(
-				(...args: any): ReturnType<T> => {
-					return fnRef.current(...args)
-				},
-				wait,
-				options
-			),
-		[]
-	)
+  const debounced = useMemo(
+    () =>
+      debounce(
+        (...args: any): ReturnType<T> => {
+          return fnRef.current(...args)
+        },
+        wait,
+        options
+      ),
+    []
+  )
 
-	return {
-		run: debounced,
-		cancel: debounced.cancel,
-		flush: debounced.flush
-	}
+  return {
+    run: debounced,
+    cancel: debounced.cancel,
+    flush: debounced.flush
+  }
 }
 
 export default useDebounceFn

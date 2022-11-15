@@ -10,5 +10,5 @@ export { default as Popup } from '@/packages/Popup'
 export type { PopupProps } from '@/packages/Popup/types'
 
 // PullRefresh
-export { default as PullRefresh } from '@/packages/PullRefresh/PullRefresh'
+export { default as PullRefresh } from '@/packages/PullRefresh'
 export type { PullRefreshProps, PullRefreshStatus } from '@/packages/PullRefresh/types'
