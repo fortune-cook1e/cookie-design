@@ -9,10 +9,10 @@ import React, {
   TouchEvent
 } from 'react'
 
+import useScrollParent from '../../hooks/useScrollParent'
+import useTouch from '../../hooks/useTouch'
 import { createNamespace } from '../../utils/bem'
 import { getScrollTop } from '../../utils/dom'
-import useScrollParent from '../hooks/useScrollParent'
-import useTouch from '../hooks/useTouch'
 
 import { PullRefreshProps, PullRefreshStatus } from './types'
 

@@ -1,9 +1,9 @@
 {
   "name": "cookie-design",
   "version": "1.1.2",
-  "main": "dist/lib/index.js",
-  "module": "dist/es/index.js",
-  "types": "dist/types/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "sideEffects": false,
   "repository": "https://github.com/fortune-cook1e/cookie-design.git",
   "author": "fortune cookie <767077147@qq.com>",
@@ -17,8 +17,8 @@
   ],
   "scripts": {
     "start": "vite",
-    "dev": "rimraf dist && rollup -c -w",
-    "build": "rimraf dist && rollup -c",
+    "dev": "rimraf dist es lib && rollup -c -w",
+    "build": "rimraf dist es lib && rollup -c",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -46,8 +46,7 @@
     "@storybook/testing-library": "^0.0.10",
     "@types/lodash": "^4.14.182",
     "@types/react": "^18.0.5",
-    "@types/react-router": "^5.1.18",
-    "@types/react-router-dom": "^5.3.3",
+    "@types/react-dom": "^18.0.9",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
     "@vitejs/plugin-react": "^2.1.0",
@@ -66,6 +65,7 @@
     "prettier": "^2.6.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "rimraf": "^3.0.2",
     "rollup": "^2.70.2",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
@@ -80,7 +80,7 @@
     "webpack": "^5.74.0"
   },
   "peerDependencies": {
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   }
 }

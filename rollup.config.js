@@ -7,8 +7,8 @@ import resolve from '@rollup/plugin-node-resolve'
 import * as fs from 'fs-extra'
 import dts from 'rollup-plugin-dts'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
-// import { terser } from 'rollup-plugin-terser'
 import postcss from 'rollup-plugin-postcss'
+import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 
 import packageJson from './package.json'
@@ -21,20 +21,21 @@ function pathResolve(dir) {
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 const ROOT_DIR = pathResolve('./src')
 const entry = pathResolve('./src/index.ts')
-const hooksEntry = pathResolve('./src/packages/hooks/index.ts')
+const hooksDir = pathResolve('./src/hooks')
+const hooksFileEntry = pathResolve('./src/hooks.ts')
+const hooksEntry = fs.readdirSync(hooksDir).map(name => `${hooksDir}/${name}/index.ts`)
+const componentsDir = pathResolve('./src/packages')
+const componentsName = fs.readdirSync(componentsDir)
+const componentsEntry = componentsName.map(name => `${componentsDir}/${name}/index.ts`)
 
 // 环境变量
 const isDev = process.env.NODE_ENV === 'development'
 
-const componentsDir = path.resolve(__dirname, './src/packages')
-
-// hooks 文件暂时不作入口
-const componentsName = fs.readdirSync(path.resolve(componentsDir)).filter(n => n !== 'hooks')
-const componentsEntry = componentsName.map(name => `${componentsDir}/${name}/index.ts`)
-
 const commonPlugins = [
   peerDepsExternal(), // 阻止打包 peer依赖
-  resolve(),
+  resolve({
+    extensions: EXTENSIONS
+  }),
   commonjs(),
   typescript({ useTsconfigDeclarationDir: true }),
   babel({
@@ -58,9 +59,7 @@ const commonPlugins = [
     extensions: ['.less']
   })
   // FIXME: 压缩会导致语法错误
-  // terser({
-  // 	ecma: 6
-  // })
+  // terser()
 ]
 
 const componentsOption = {
@@ -68,17 +67,13 @@ const componentsOption = {
   // FIXME: 暂时不引入 extenal
   output: [
     {
-      reserveModules: true,
-      preserveModulesRoot: 'src',
-      dir: './dist/es',
+      dir: 'dist',
       format: 'esm'
-    },
-    {
-      reserveModules: true,
-      preserveModulesRoot: 'src',
-      dir: './dist/lib',
-      format: 'cjs'
     }
+    // {
+    //   dir: 'lib',
+    //   format: 'cjs'
+    // }
   ],
 
   plugins: commonPlugins
@@ -87,20 +82,19 @@ const componentsOption = {
 const typesOption = {
   input: entry,
   output: {
-    preserveModules: true,
-    preserveModulesRoot: 'src',
-    dir: 'dist/types',
+    file: packageJson.types,
     format: 'esm'
   },
   plugins: [...commonPlugins, dts()]
 }
 
 const hooksOption = {
-  input: hooksEntry,
+  input: hooksFileEntry,
   output: {
-    dir: 'dist/hooks',
+    file: 'dist/hooks/index.js',
     format: 'esm'
-  }
+  },
+  plugins: commonPlugins
 }
 
-export default [componentsOption, typesOption]
+export default [typesOption]

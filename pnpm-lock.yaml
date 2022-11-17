@@ -20,8 +20,7 @@ specifiers:
   '@storybook/testing-library': ^0.0.10
   '@types/lodash': ^4.14.182
   '@types/react': ^18.0.5
-  '@types/react-router': ^5.1.18
-  '@types/react-router-dom': ^5.3.3
+  '@types/react-dom': ^18.0.9
   '@typescript-eslint/eslint-plugin': ^5.38.1
   '@typescript-eslint/parser': ^5.38.1
   '@vitejs/plugin-react': ^2.1.0
@@ -42,6 +41,7 @@ specifiers:
   prettier: ^2.6.2
   react: 17.0.2
   react-dom: 17.0.2
+  rimraf: ^3.0.2
   rollup: ^2.70.2
   rollup-plugin-dts: ^4.2.2
   rollup-plugin-peer-deps-external: ^2.2.4
@@ -79,8 +79,7 @@ devDependencies:
   '@storybook/testing-library': 0.0.10_sfoxds7t5ydpegc3knd667wn6m
   '@types/lodash': 4.14.185
   '@types/react': 18.0.21
-  '@types/react-router': 5.1.19
-  '@types/react-router-dom': 5.3.3
+  '@types/react-dom': 18.0.9
   '@typescript-eslint/eslint-plugin': 5.38.1_qatzzi2vqzjqg2tq57nszrvcfi
   '@typescript-eslint/parser': 5.38.1_7ilbxdl5iguzcjriqqcg2m5cku
   '@vitejs/plugin-react': 2.1.0_vite@3.1.4
@@ -99,6 +98,7 @@ devDependencies:
   prettier: 2.7.1
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
+  rimraf: 3.0.2
   rollup: 2.79.1
   rollup-plugin-dts: 4.2.2_5q64ijqsuisqe52alrh6v6njki
   rollup-plugin-peer-deps-external: 2.2.4_rollup@2.79.1
@@ -3690,10 +3690,6 @@ packages:
       '@types/unist': 2.0.6
     dev: true
 
-  /@types/history/4.7.11:
-    resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
-    dev: true
-
   /@types/html-minifier-terser/5.1.2:
     resolution: {integrity: sha512-h4lTMgMJctJybDp8CQrxTUiiYmedihHWkjnF/8Pxseu2S6Nlfcy8kwboQ8yejh456rP2yWoEVm1sS/FVsfM48w==}
     dev: true
@@ -3783,18 +3779,9 @@ packages:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
     dev: true
 
-  /@types/react-router-dom/5.3.3:
-    resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
+  /@types/react-dom/18.0.9:
+    resolution: {integrity: sha512-qnVvHxASt/H7i+XG1U1xMiY5t+IHcPGUK7TDMDzom08xa7e86eCeKOiLZezwCKVxJn6NEiiy2ekgX8aQssjIKg==}
     dependencies:
-      '@types/history': 4.7.11
-      '@types/react': 18.0.21
-      '@types/react-router': 5.1.19
-    dev: true
-
-  /@types/react-router/5.1.19:
-    resolution: {integrity: sha512-Fv/5kb2STAEMT3wHzdKQK2z8xKq38EDIGVrutYLmQVVLe+4orDFquU52hQrULnEHinMKv9FSA6lf9+uNT1ITtA==}
-    dependencies:
-      '@types/history': 4.7.11
       '@types/react': 18.0.21
     dev: true
 

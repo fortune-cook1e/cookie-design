@@ -1,6 +1,6 @@
 import { useEffect, useRef, MutableRefObject, RefObject } from 'react'
 
-import { inBrowser } from '../../../utils'
+import { inBrowser } from '../../utils'
 
 type ScrollElement = HTMLElement | Window
 

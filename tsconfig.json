@@ -1,26 +1,48 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
-    "target": "ES6",
-    "module": "esnext",
-    "jsx": "react-jsx",
-    "sourceMap": true,
-    "outDir": "dist",
-    "strict": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "noImplicitAny": false,
-    "forceConsistentCasingInFileNames": true,
-    // "declaration": true,
-    // "declarationDir": "dist/types",
-    // "emitDeclarationOnly": true,
+    // "rootDir": "src",
+    // "target": "ES6",
+    // "module": "esnext",
+    // "jsx": "react-jsx",
+    // "sourceMap": true,
+    // "outDir": "dist",
+    // "strict": true,
+    // "moduleResolution": "node",
+    // "allowSyntheticDefaultImports": true,
+    // "esModuleInterop": true,
+    // "skipLibCheck": true,
+    // "noImplicitAny": false,
+    // "forceConsistentCasingInFileNames": true,
+    // // "declaration": true,
+    // // "declarationDir": "dist/types",
+    // // "emitDeclarationOnly": true,
+    // "baseUrl": "./",
+    // "lib": ["DOM", "ES2016"],
+
+    /* Basic Options */
     "baseUrl": "./",
-    "lib": ["DOM", "ES2016"],
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "target": "ES6" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */,
+    "module": "esnext" /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */,
+    "jsx": "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
+    "declaration": true /* Generates corresponding '.d.ts' file. */,
+    "noEmit": true /* Do not emit outputs. */,
+    "moduleResolution": "node",
+    "lib": ["DOM", "es2016"],
+
+    /* Strict Type-Checking Options */
+    "strict": true /* Enable all strict type-checking options. */,
+    "noImplicitAny": true /* Raise error on expressions and declarations with an implied 'any' type. */,
+    "strictNullChecks": true /* Enable strict null checks. */,
+    "noImplicitThis": true /* Raise error on 'this' expressions with an implied 'any' type. */,
+    "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */,
+
+    /* Additional Checks */
+    "noUnusedLocals": false /* Report errors on unused locals. */,
+    "noUnusedParameters": false /* Report errors on unused parameters. */,
+    "noImplicitReturns": false /* Report error when not all code paths in function return a value. */,
+    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
+
+    "esModuleInterop": true
   },
   "typeRoots": ["node_modules/@types", "src/declaration.d.ts", "vite.config.ts", "vite/client"],
   "include": ["src/*"]
