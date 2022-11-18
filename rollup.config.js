@@ -68,7 +68,7 @@ const componentsOption = {
   output: [
     {
       dir: 'dist',
-      format: 'esm'
+      format: 'es'
     }
     // {
     //   dir: 'lib',
@@ -92,9 +92,9 @@ const hooksOption = {
   input: hooksFileEntry,
   output: {
     file: 'dist/hooks/index.js',
-    format: 'esm'
+    format: 'es'
   },
   plugins: commonPlugins
 }
 
-export default [typesOption]
+export default [componentsOption]
