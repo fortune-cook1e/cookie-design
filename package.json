@@ -1,8 +1,8 @@
 {
   "name": "cookie-design",
   "version": "1.1.2",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "dist/cookie-design.js",
+  "module": "dist/es/cookie-ui-esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "repository": "https://github.com/fortune-cook1e/cookie-design.git",
@@ -17,13 +17,17 @@
   ],
   "scripts": {
     "start": "vite",
-    "dev": "rimraf dist es lib && rollup -c -w",
-    "build": "rimraf dist es lib && rollup -c",
+    "compile": "gulp --gulpfile scripts/css.js",
+    "dev": "rimraf dist es lib && pnpm compile && NODE_ENV=development rollup -c -w",
+    "build": "rimraf dist es lib && pnpm compile && NODE_ENV=production rollup -c",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@babel/runtime-corejs3": "^7.20.1",
     "framer-motion": "^6.3.3",
+    "global": "^4.4.0",
+    "gulp-cli": "^2.3.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
@@ -37,7 +41,6 @@
     "@rollup/plugin-commonjs": "^21.1.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.2.1",
-    "@rollup/plugin-typescript": "^8.3.2",
     "@storybook/addon-actions": "^6.4.22",
     "@storybook/addon-essentials": "^6.4.22",
     "@storybook/addon-interactions": "^6.4.22",
@@ -57,6 +60,9 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.31.8",
     "fs-extra": "^10.1.0",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-less": "^5.0.0",
     "less": "^4.1.2",
     "less-loader": "5.0.0",
     "postcss": "^8.4.12",

@@ -1,24 +1,5 @@
 {
   "compilerOptions": {
-    // "rootDir": "src",
-    // "target": "ES6",
-    // "module": "esnext",
-    // "jsx": "react-jsx",
-    // "sourceMap": true,
-    // "outDir": "dist",
-    // "strict": true,
-    // "moduleResolution": "node",
-    // "allowSyntheticDefaultImports": true,
-    // "esModuleInterop": true,
-    // "skipLibCheck": true,
-    // "noImplicitAny": false,
-    // "forceConsistentCasingInFileNames": true,
-    // // "declaration": true,
-    // // "declarationDir": "dist/types",
-    // // "emitDeclarationOnly": true,
-    // "baseUrl": "./",
-    // "lib": ["DOM", "ES2016"],
-
     /* Basic Options */
     "baseUrl": "./",
     "target": "ES6" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */,
@@ -44,6 +25,12 @@
 
     "esModuleInterop": true
   },
-  "typeRoots": ["node_modules/@types", "src/declaration.d.ts", "vite.config.ts", "vite/client"],
+  "typeRoots": [
+    "node_modules/@types",
+    "src/declaration.d.ts",
+    "vite.config.ts",
+    "vite/client",
+    "rollup.config.ts"
+  ],
   "include": ["src/*"]
 }

@@ -1,38 +1,38 @@
 {
-	"extends": ["alloy", "alloy/react", "alloy/typescript"],
-	"globals": {
-		"JSX": true,
-		"COMPONENTS": true
-	},
-	"plugins": ["import"],
-	"rules": {
-		"import/order": [
-			2,
-			{
-				"newlines-between": "always",
-				"groups": [
-					"builtin",
-					"external",
-					"internal",
-					"parent",
-					"sibling",
-					"index",
-					"unknown",
-					"object",
-					"type"
-				],
-				"alphabetize": {
-					"order": "asc",
-					"caseInsensitive": true
-				},
-				"pathGroups": [
-					{
-						"pattern": "react*",
-						"group": "external",
-						"position": "before"
-					}
-				]
-			}
-		]
-	}
+  "extends": ["alloy", "alloy/react", "alloy/typescript"],
+  "globals": {
+    "JSX": true,
+    "COMPONENTS": true
+  },
+  "plugins": ["import"],
+  "rules": {
+    "import/order": [
+      2,
+      {
+        "newlines-between": "always",
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "unknown",
+          "object",
+          "type"
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "pathGroups": [
+          {
+            "pattern": "react*",
+            "group": "external",
+            "position": "before"
+          }
+        ]
+      }
+    ]
+  }
 }

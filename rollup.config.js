@@ -3,6 +3,7 @@ import * as path from 'path'
 import alias from '@rollup/plugin-alias'
 import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
+import json from '@rollup/plugin-json'
 import resolve from '@rollup/plugin-node-resolve'
 import * as fs from 'fs-extra'
 import dts from 'rollup-plugin-dts'
@@ -15,6 +16,23 @@ import packageJson from './package.json'
 
 function pathResolve(dir) {
   return path.resolve(__dirname, dir)
+}
+
+const createBanner = () => {
+  return `/*!
+  * ${packageJson.name} v${packageJson.version}
+  * (c) ${new Date().getFullYear()}
+  * @license MIT
+  */`
+}
+
+const onwarn = warning => {
+  // Silence warning
+  if (warning.code === 'CIRCULAR_DEPENDENCY' || warning.code === 'EVAL') {
+    return
+  }
+
+  console.warn(`(!) ${warning.message}`)
 }
 
 // 入口
@@ -31,70 +49,103 @@ const componentsEntry = componentsName.map(name => `${componentsDir}/${name}/ind
 // 环境变量
 const isDev = process.env.NODE_ENV === 'development'
 
-const commonPlugins = [
-  peerDepsExternal(), // 阻止打包 peer依赖
-  resolve({
-    extensions: EXTENSIONS
-  }),
-  commonjs(),
-  typescript({ useTsconfigDeclarationDir: true }),
-  babel({
-    babelHelpers: 'runtime',
-    extensions: EXTENSIONS,
-    exclude: 'node_modules/**' // 防止打包node_modules下的文件
-  }),
-  alias({
-    resolve: EXTENSIONS,
-    entries: [
-      {
-        find: '@',
-        replacement: ROOT_DIR
-      }
-    ]
-  }),
-  postcss({
-    extract: true,
-    minimize: !isDev,
-    modules: false,
-    extensions: ['.less']
-  })
-  // FIXME: 压缩会导致语法错误
-  // terser()
-]
+const baseConfig = {
+  onwarn,
+  output: {
+    banner: createBanner(),
+    sourcemap: false,
+    externalLiveBindings: false,
+    globals: {
+      react: 'react'
+    }
+  },
+  plugins: [
+    peerDepsExternal(), // 阻止打包 peer依赖
+    commonjs(),
+    resolve({
+      extensions: EXTENSIONS
+    }),
+    typescript({ useTsconfigDeclarationDir: true }),
+    babel({
+      babelrc: true,
+      babelHelpers: 'runtime',
+      extensions: EXTENSIONS,
+      exclude: 'node_modules/**' // 防止打包node_modules下的文件
+    }),
+    alias({
+      entries: [
+        {
+          find: '@',
+          replacement: ROOT_DIR
+        }
+      ]
+    }),
+    json(),
+    postcss({
+      extract: true,
+      minimize: !isDev,
+      modules: false,
+      extensions: ['.less']
+    })
+    // FIXME: 压缩会导致语法错误
+    // !isDev && terser()
+  ]
+}
 
-const componentsOption = {
-  input: [entry, ...componentsEntry],
-  // FIXME: 暂时不引入 extenal
+function mergeConfig(baseConfig, targetConfig) {
+  const config = { ...baseConfig }
+  // plugin
+  if (targetConfig.plugins) {
+    config.plugins.push(...targetConfig.plugins)
+  }
+
+  // output
+  if (Array.isArray(targetConfig.output)) {
+    config.output = targetConfig.output.map(o => ({
+      ...baseConfig.input,
+      ...o
+    }))
+  } else {
+    config.output = { ...baseConfig.output, ...targetConfig.output }
+  }
+
+  // input
+  config.input = targetConfig.input
+
+  return config
+}
+
+const componentsConfig = mergeConfig(baseConfig, {
+  input: './src/index.ts',
+
   output: [
     {
-      dir: 'dist',
+      file: './dist/es/cookie-ui-esm.js',
       format: 'es'
+    },
+    {
+      file: './dist/cookie-design.js',
+      format: 'cjs'
     }
-    // {
-    //   dir: 'lib',
-    //   format: 'cjs'
-    // }
-  ],
+  ]
+})
 
-  plugins: commonPlugins
-}
+// const typesOption = {
+//   input: entry,
+//   output: {
+//     file: packageJson.types,
+//     format: 'esm'
+//   },
+//   plugins: [...commonPlugins, dts()]
+// }
 
-const typesOption = {
-  input: entry,
-  output: {
-    file: packageJson.types,
-    format: 'esm'
-  },
-  plugins: [...commonPlugins, dts()]
-}
+// const hooksOption = {
+//   input: hooksFileEntry,
+//   output: {
+//     file: 'dist/hooks/index.js',
+//     format: 'es'
+//   },
+//   plugins: commonPlugins
+// }
 
-const hooksOption = {
-  input: hooksFileEntry,
-  output: {
-    file: 'dist/hooks/index.js',
-    format: 'es'
-  },
-  plugins: commonPlugins
-}
-
-export default [componentsOption]
+export default [componentsConfig]
