@@ -8,7 +8,10 @@ const less = require('gulp-less')
 function compile() {
   return src('../src/**/*.less').pipe(less()).pipe(concat('index.css')).pipe(dest('../dist'))
   // .pipe(cssmin())
-  // .pipe(dest('./lib'))
+}
+
+function combine() {
+  return src('../src/**/*.less').pipe(concat('cookie-design.less')).pipe(dest('../dist'))
 }
 
 exports.default = compile

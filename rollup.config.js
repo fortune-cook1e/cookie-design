@@ -9,7 +9,7 @@ import * as fs from 'fs-extra'
 import dts from 'rollup-plugin-dts'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import postcss from 'rollup-plugin-postcss'
-import { terser } from 'rollup-plugin-terser'
+// import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 
 import packageJson from './package.json'
@@ -26,39 +26,30 @@ const createBanner = () => {
   */`
 }
 
-const onwarn = warning => {
-  // Silence warning
-  if (warning.code === 'CIRCULAR_DEPENDENCY' || warning.code === 'EVAL') {
-    return
-  }
-
-  console.warn(`(!) ${warning.message}`)
-}
-
 // 入口
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 const ROOT_DIR = pathResolve('./src')
 const entry = pathResolve('./src/index.ts')
 const hooksDir = pathResolve('./src/hooks')
 const hooksFileEntry = pathResolve('./src/hooks.ts')
-const hooksEntry = fs.readdirSync(hooksDir).map(name => `${hooksDir}/${name}/index.ts`)
 const componentsDir = pathResolve('./src/packages')
 const componentsName = fs.readdirSync(componentsDir)
-const componentsEntry = componentsName.map(name => `${componentsDir}/${name}/index.ts`)
-
 // 环境变量
 const isDev = process.env.NODE_ENV === 'development'
 
 const baseConfig = {
-  onwarn,
+  external: ['react', 'react-dom', 'lodash-es', 'lodash'],
   output: {
     banner: createBanner(),
     sourcemap: false,
     externalLiveBindings: false,
     globals: {
-      react: 'react'
+      react: 'React',
+      'react-dom': 'ReactDOM',
+      'lodash-es': 'lodash'
     }
   },
+
   plugins: [
     peerDepsExternal(), // 阻止打包 peer依赖
     commonjs(),
@@ -67,12 +58,12 @@ const baseConfig = {
     }),
     typescript({ useTsconfigDeclarationDir: true }),
     babel({
-      babelrc: true,
       babelHelpers: 'runtime',
       extensions: EXTENSIONS,
-      exclude: 'node_modules/**' // 防止打包node_modules下的文件
+      exclude: 'node_modules/**'
     }),
     alias({
+      resolve: EXTENSIONS,
       entries: [
         {
           find: '@',
@@ -85,67 +76,56 @@ const baseConfig = {
       extract: true,
       minimize: !isDev,
       modules: false,
-      extensions: ['.less']
+      extensions: ['.less', '.css']
     })
     // FIXME: 压缩会导致语法错误
-    // !isDev && terser()
+    // terser()
   ]
 }
 
-function mergeConfig(baseConfig, targetConfig) {
-  const config = { ...baseConfig }
-  // plugin
-  if (targetConfig.plugins) {
-    config.plugins.push(...targetConfig.plugins)
-  }
-
-  // output
-  if (Array.isArray(targetConfig.output)) {
-    config.output = targetConfig.output.map(o => ({
-      ...baseConfig.input,
-      ...o
-    }))
-  } else {
-    config.output = { ...baseConfig.output, ...targetConfig.output }
-  }
-
-  // input
-  config.input = targetConfig.input
-
-  return config
-}
-
-const componentsConfig = mergeConfig(baseConfig, {
-  input: './src/index.ts',
-
+const componentConfig = {
+  ...baseConfig,
+  input: entry,
   output: [
     {
-      file: './dist/es/cookie-ui-esm.js',
+      ...baseConfig.output,
+      file: './dist/cookie-design-umd.js',
+      format: 'umd',
+      name: 'cookie-design'
+    },
+    {
+      ...baseConfig.output,
+      file: packageJson.module,
       format: 'es'
     },
     {
-      file: './dist/cookie-design.js',
+      ...baseConfig.output,
+      file: packageJson.main,
       format: 'cjs'
     }
-  ]
-})
+  ],
+  plugins: baseConfig.plugins
+}
 
-// const typesOption = {
-//   input: entry,
-//   output: {
-//     file: packageJson.types,
-//     format: 'esm'
-//   },
-//   plugins: [...commonPlugins, dts()]
-// }
+const typesOption = {
+  ...baseConfig,
+  input: entry,
+  output: {
+    ...baseConfig.output,
+    file: packageJson.types,
+    format: 'esm'
+  },
+  plugins: [...baseConfig.plugins, dts()]
+}
 
-// const hooksOption = {
-//   input: hooksFileEntry,
-//   output: {
-//     file: 'dist/hooks/index.js',
-//     format: 'es'
-//   },
-//   plugins: commonPlugins
-// }
+const hooksOption = {
+  ...baseConfig,
+  input: hooksFileEntry,
+  output: {
+    ...baseConfig.output,
+    file: 'dist/hooks/index.js',
+    format: 'esm'
+  }
+}
 
-export default [componentsConfig]
+export default [componentConfig, typesOption, hooksOption]

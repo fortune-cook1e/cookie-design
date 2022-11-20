@@ -25,12 +25,6 @@
 
     "esModuleInterop": true
   },
-  "typeRoots": [
-    "node_modules/@types",
-    "src/declaration.d.ts",
-    "vite.config.ts",
-    "vite/client",
-    "rollup.config.ts"
-  ],
+  "typeRoots": ["node_modules/@types", "src/declaration.d.ts", "vite.config.ts", "vite/client"],
   "include": ["src/*"]
 }
