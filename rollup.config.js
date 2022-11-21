@@ -34,7 +34,8 @@ const hooksDir = pathResolve('./src/hooks')
 const hooksFileEntry = pathResolve('./src/hooks.ts')
 const componentsDir = pathResolve('./src/packages')
 const componentsName = fs.readdirSync(componentsDir)
-// 环境变量
+const componentsEntry = componentsName.map(name => `${componentsDir}/${name}/index.ts`)
+
 const isDev = process.env.NODE_ENV === 'development'
 
 const baseConfig = {
@@ -46,18 +47,20 @@ const baseConfig = {
     globals: {
       react: 'React',
       'react-dom': 'ReactDOM',
-      'lodash-es': 'lodash'
+      'lodash-es': 'lodash',
+      'framer-motion': 'framerMotion'
     }
   },
 
   plugins: [
-    peerDepsExternal(), // 阻止打包 peer依赖
+    peerDepsExternal(),
     commonjs(),
     resolve({
       extensions: EXTENSIONS
     }),
     typescript({ useTsconfigDeclarationDir: true }),
     babel({
+      babelrc: true,
       babelHelpers: 'runtime',
       extensions: EXTENSIONS,
       exclude: 'node_modules/**'
@@ -87,23 +90,33 @@ const componentConfig = {
   ...baseConfig,
   input: entry,
   output: [
-    {
-      ...baseConfig.output,
-      file: './dist/cookie-design-umd.js',
-      format: 'umd',
-      name: 'cookie-design'
-    },
+    // {
+    //   ...baseConfig.output,
+    //   file: './dist/cookie-design-umd.js',
+    //   format: 'umd',
+    //   name: 'cookie-design'
+    // },
     {
       ...baseConfig.output,
       file: packageJson.module,
       format: 'es'
-    },
-    {
-      ...baseConfig.output,
-      file: packageJson.main,
-      format: 'cjs'
     }
+    // {
+    //   ...baseConfig.output,
+    //   file: packageJson.main,
+    //   format: 'cjs'
+    // }
   ],
+  plugins: baseConfig.plugins
+}
+
+const multiEntrys = {
+  ...baseConfig,
+  input: [entry, ...componentsEntry],
+  output: {
+    dir: 'lib',
+    format: 'es'
+  },
   plugins: baseConfig.plugins
 }
 
@@ -128,4 +141,6 @@ const hooksOption = {
   }
 }
 
-export default [componentConfig, typesOption, hooksOption]
+// export default [componentConfig, typesOption]
+
+export default [componentConfig]
