@@ -9,7 +9,7 @@ import * as fs from 'fs-extra'
 import dts from 'rollup-plugin-dts'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import postcss from 'rollup-plugin-postcss'
-// import { terser } from 'rollup-plugin-terser'
+import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 
 import packageJson from './package.json'
@@ -81,8 +81,6 @@ const baseConfig = {
       modules: false,
       extensions: ['.less', '.css']
     })
-    // FIXME: 压缩会导致语法错误
-    // terser()
   ]
 }
 
@@ -90,34 +88,24 @@ const componentConfig = {
   ...baseConfig,
   input: entry,
   output: [
-    // {
-    //   ...baseConfig.output,
-    //   file: './dist/cookie-design-umd.js',
-    //   format: 'umd',
-    //   name: 'cookie-design'
-    // },
+    {
+      ...baseConfig.output,
+      file: './dist/cookie-design-umd.js',
+      format: 'umd',
+      name: 'cookie-design'
+    },
     {
       ...baseConfig.output,
       file: packageJson.module,
       format: 'es'
+    },
+    {
+      ...baseConfig.output,
+      file: packageJson.main,
+      format: 'cjs'
     }
-    // {
-    //   ...baseConfig.output,
-    //   file: packageJson.main,
-    //   format: 'cjs'
-    // }
   ],
-  plugins: baseConfig.plugins
-}
-
-const multiEntrys = {
-  ...baseConfig,
-  input: [entry, ...componentsEntry],
-  output: {
-    dir: 'lib',
-    format: 'es'
-  },
-  plugins: baseConfig.plugins
+  plugins: [...baseConfig.plugins, terser()]
 }
 
 const typesOption = {
@@ -131,16 +119,4 @@ const typesOption = {
   plugins: [...baseConfig.plugins, dts()]
 }
 
-const hooksOption = {
-  ...baseConfig,
-  input: hooksFileEntry,
-  output: {
-    ...baseConfig.output,
-    file: 'dist/hooks/index.js',
-    format: 'esm'
-  }
-}
-
-// export default [componentConfig, typesOption]
-
-export default [componentConfig]
+export default [componentConfig, typesOption]
