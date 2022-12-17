@@ -84,6 +84,7 @@ const baseConfig = {
   ]
 }
 
+// 编译组件
 const componentConfig = {
   ...baseConfig,
   input: entry,
@@ -108,6 +109,7 @@ const componentConfig = {
   plugins: [...baseConfig.plugins, terser()]
 }
 
+// 编译类型
 const typesOption = {
   ...baseConfig,
   input: entry,
@@ -117,6 +119,17 @@ const typesOption = {
     format: 'esm'
   },
   plugins: [...baseConfig.plugins, dts()]
+}
+
+// 编译hooks
+const hooksOption = {
+  ...baseConfig,
+  input: hooksFileEntry,
+  output: {
+    ...baseConfig.output,
+    file: 'dist/hooks/index.js',
+    format: 'esm'
+  }
 }
 
 export default [componentConfig, typesOption]

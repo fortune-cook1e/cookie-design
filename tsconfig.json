@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Basic Options */
     "baseUrl": "./",
-    "target": "ES6" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */,
+    "target": "ESNext" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */,
     "module": "esnext" /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */,
     "jsx": "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
     "declaration": true /* Generates corresponding '.d.ts' file. */,
