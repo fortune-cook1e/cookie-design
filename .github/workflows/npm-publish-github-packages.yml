@@ -10,12 +10,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    rules:
+      - if: '$CI_COMMIT_BRANCH == "master"'
+        changes:
+          - package.json
+        when: always
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         id: pnpm-install
