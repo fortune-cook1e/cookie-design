@@ -5,7 +5,10 @@
   "module": "dist/cookie-design-esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
-  "repository": "https://github.com/fortune-cook1e/cookie-design.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fortune-cook1e/cookie-design.git"
+  },
   "author": "fortune cookie <767077147@qq.com>",
   "license": "MIT",
   "files": [
