@@ -1,6 +1,6 @@
 {
   "name": "cookie-design",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "main": "dist/cookie-design.js",
   "module": "dist/cookie-design-esm.js",
   "types": "dist/index.d.ts",
