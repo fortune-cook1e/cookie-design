@@ -21,7 +21,7 @@ jobs:
           version: 7
           run_install: false
       - name: Install dependencies and build 🔧
-        run: pnpm run build
+        run: pnpm install && pnpm run build
       - name: Publish package on NPM 📦
         run: npm publish
         env:
